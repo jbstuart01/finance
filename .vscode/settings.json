@@ -2,7 +2,7 @@
     "python.testing.unittestArgs": [
         "-v",
         "-s",
-        "./cd-earnings",
+        "./cd_earnings",
         "-p",
         "*test.py"
     ],

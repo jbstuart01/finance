@@ -2,10 +2,9 @@
 class CD:
     # initialize the object
     def __init__(self, deposit, rate, term):
-        self._deposit = deposit
-        # handle rates that are in the format '5' or '.05' for a 5.00% APY
-        self._rate = rate if rate < 1 else rate / 100
-        self._term = term   
+        self.set_deposit(deposit)
+        self.set_rate(rate if rate < 1 else rate / 100)
+        self.set_term(term)
 
     # Getter for deposit
     def get_deposit(self):
@@ -13,7 +12,16 @@ class CD:
 
     # Setter for deposit
     def set_deposit(self, deposit):
-        self._deposit = deposit
+        # if we are given something other than an integer or float
+        if not isinstance(deposit, (int, float)):
+            raise TypeError("Deposit must be a number.")
+        # if we are given a negative value
+        elif deposit <= 0:
+            raise ValueError()
+        
+        # once input is validated, set the deposit amount
+        else:
+            self._deposit = deposit
 
     # Getter for rate
     def get_rate(self):
@@ -21,8 +29,18 @@ class CD:
 
     # Setter for rate
     def set_rate(self, rate):
-        # if the rate is 5.00%, we can handle inputs of 5 or .05
-        self._rate = rate if rate < 1 else rate / 100
+        # if we are given something other than an integer or float
+        if not isinstance(rate, (int, float)):
+            raise TypeError("Rate must be a number.")
+        elif rate <= 0:
+            raise ValueError("Rate must be a positive value.")
+        
+        # if the rate is 5.00%, we could handle inputs of 5 or .05
+        elif rate > 1:
+            # if it was given 5, set it to be .05
+            self._rate = rate / 100
+        else:
+            self._rate = rate
 
     # Getter for term
     def get_term(self):
@@ -30,6 +48,12 @@ class CD:
 
     # Setter for term
     def set_term(self, term):
+        # we can only handle a positive integer for month
+        if not isinstance(term, int):
+            raise TypeError("Term must be an integer.")
+        if term <= 0:
+            raise ValueError("Term must be a positive value.")
+        
         self._term = term
 
     # get the amount the CD will earn at the end of the term
@@ -49,20 +73,3 @@ class CD:
         
         # subtract the principal from the total, and return the leftover
         return total - principal
-    
-    # Print CD information
-    # def print_info(self):
-    #     deposit = self.get_deposit()
-    #     rate = self.get_rate() * 100  # Convert rate back to percentage
-    #     term = self.get_term()
-    #     earnings = self.calculate_earnings()
-    #     final_amount = deposit + earnings
-
-    #     print(f"{'CD Information':^40}")
-    #     print("="*40)
-    #     print(f"{'Initial Deposit:':>20} ${deposit:,.2f}")
-    #     print(f"{'Rate:':>20} {rate:.2f}% APY")
-    #     print(f"{'Term:':>20} {term} months")
-    #     print(f"{'Earnings:':>20} ${earnings:,.2f}")
-    #     print(f"{'Final Amount:':>20} ${final_amount:,.2f}")
-    #     print("="*40)
